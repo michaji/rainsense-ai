@@ -1,4 +1,4 @@
-# RainSense AI: Machine Learning for Indigenous Rainfall Forecasting in Ghana
+# RainSense AI: Machine Learning for Indigenous Rainfall Forecasting
 
 📌 **Project Overview**  
 Accurate short-term rainfall prediction is critical for agricultural planning, food security, and climate resilience—especially in regions where access to modern meteorological infrastructure is limited. In many rural communities across Ghana, farmers rely on indigenous ecological knowledge such as cloud patterns, wind direction, and other environmental cues to anticipate rainfall. While valuable, these predictions can be subjective and inconsistent.
@@ -58,7 +58,6 @@ Please download it from Zindi and place it in the `data/` directory as described
 
 ## 🧱 Project Structure
 ```
-
 rainsense-ai/
 │
 ├── data/
@@ -133,8 +132,8 @@ python train.py
 
 This will create:
 
-* `models/rainfall_model.pkl`
-* `models/label_encoder.pkl`
+* `models/rainfall_model.pkl` - The trained machine learning pipeline
+* `models/label_encoder.pkl` - The tool to convert numbers (0, 1, 2) back to text ("NORAIN", "HEAVYRAIN")
 
 ---
 
@@ -162,12 +161,69 @@ docker build -t rainsense-ai .
 docker run -p 8000:8000 rainsense-ai
 ```
 
+Then open:
+- API - http://localhost:8000
+- Docs - http://localhost:8000/docs
+
+
+---
+## 🔮 Sample API Request & Response
+
+### 📍 Endpoint
+`POST /predict`
+
+---
+
+### 📤 Sample Request (JSON)
+```json
+{
+  "community": "Kintampo",
+  "district": "Kintampo North",
+  "indicator": "Cloud Cover",
+  "confidence": 0.82,
+  "predicted_intensity": 2,
+  "forecast_length": 6,
+  "prediction_time": "2023-01-15 14:00:00"
+}
+```
+### 🔎 Field Descriptions
+
+| Field               | Description                                      |
+|---------------------|--------------------------------------------------|
+| community           | Name of the local community                      |
+| district            | Administrative district                          |
+| indicator           | Indigenous weather indicator (e.g., clouds, wind, humidity) |
+| confidence          | Confidence score provided by the observer        |
+| predicted_intensity | Numeric estimate from indigenous forecast        |
+| forecast_length     | Forecast horizon in hours                        |
+| prediction_time     | Time the forecast was made                       |
+---
+### Sample Response (JSON)
+```json
+{
+  "predicted_class": "HEAVYRAIN"
+}
+
+```
+
 ---
 
 ## 📦 Deployment
 
 * The model is deployed locally using Docker
 * Cloud deployment (e.g., Render, Railway, or Fly.io) can be added as an extension
+
+---
+### 🩺 Health Check & Monitoring
+---
+- **Health Endpoint:** `/health`
+- **Purpose:** Service readiness and monitoring
+- **Prediction Logs:** All predictions are logged for auditing and monitoring
+
+Logs are stored locally in: `prediction_logs.log`
+
+
+This enables traceability, debugging, and future monitoring extensions.
 
 ---
 
