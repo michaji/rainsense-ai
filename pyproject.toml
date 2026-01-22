@@ -1,0 +1,14 @@
+[project]
+name = "rainsense-ai"
+version = "0.1.0"
+description = "Indigenous Rainfall Forecasting API"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "xgboost"
+]
